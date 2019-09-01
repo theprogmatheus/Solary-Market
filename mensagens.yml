@@ -1,0 +1,80 @@
+#########################[ Solary-Market ]##########################
+##                                                                ##
+##                       Autor: Sr_Edition                        ##
+##                         Versão: 1.1                            ##
+##                    Site: www.nuvemplugins.com                  ##
+##                                                                ##
+##                   Encontrou algum bug? Reporte!                ##
+##                                                                ##
+##                  Email: mateusaguiar-15@hotmail                ##
+##                     Discord: Sr_Edition#7628                   ##
+##                                                                ##
+####################################################################
+
+
+#Configuração das mensagens do plugin
+
+#OBS EU ERREI OS "SUCESS" NA VERDADE ERA PARA SER "SUCCESS", MAS DEU PREGUIÇA DE CORRIGIR ENTAO VAI FICAR ASSIM MESMO! kkk
+
+NO_PERMISSION: "&cVocê não possúi permissão para isso."
+EXPIRE_NOTFOUND: "&cNão havia itens expirados para serem coletados."
+EXPIRE_COLLECT: "&aSeus itens expirados foram coletados com sucesso!"
+INVENTORY_FULL: "&cVocê não possúi espaço suficiente no inventário para isso."
+PLAYER_NULL: "&cO jogador '{player}' não foi encontrado em nosso banco de dados."
+NUMBER_NULL: "&cValor incorreto, por favor insira um valor de 0 a {valor_max}"
+ITEM_NULL: "&cSegure um item e digite o comando '/mercado vender [preço]'."
+ITEM_NOTFOUND: "&cEsse item foi adquirido por outro jogador, abra o mercado novamente para vê-lo atualizado."
+ITEM_NOCOMP: "&cEste item não é compatível com nenhuma categoria do mercado."
+ITEM_NOCOMP2: "&cA categoria deste item não aceita a venda de vários itens por vez."
+SELL_ERROR: "&cOcorreu um erro ao tentar vender este item no mercado."
+MAX_ITENS: "&cVocê atingiu a quantidade máxima de itens a venda ou aguardando coleta para seu grupo."
+SELL_SUCESS: "&aItem colocado a venda por {valor} coins"
+SELL_SUCESS_PESSOAL: "&aItem colocado a venda no mercado pessoal de {player} por {valor} coins"
+SELL_ERRO_PESSOAL: "&cVocê não pode vender um item no seu próprio mercado pessoal."
+CONFIRM_NO: "&cOperação cancelada com sucesso."
+BUY_SUCESS: "&aItem comprado com sucesso por {valor} coins"
+SELL_BUY_TARGET: "&aVocê vendeu um item para o jogador {player}. A quantia de {valor} coins foi adicionado a sua conta."
+COLLECT_SUCESS: "&aItem coletado com sucesso."
+NO_MONEY: "&cVocê não possui money suficiente para adquirir esse item."
+ITEM_REMOVE_SUCESS: "&aItem removido do mercado com sucesso."
+ITEM_REMOVE_TARGET: "&cSeu item foi removido do mercado por violar as regras."
+BAN_MESSAGE: "&cVocê está temporariamente banido do mercado por não usa-lo corretamente."
+BAN_SUCCESS: "&aVocê baniu o jogador {player} do mercado."
+BAN_ERRO_ISBAN: "&cEste jogador já está temporariamente banido do mercado."
+BAN_ERRO_NUMBER: "&cValor do tempo incorreto."
+UNBAN_SUCESS: "&aVocê desbaniu o jogador {player} do mercado."
+PRICE_MAX: "&cVocê ultrapassou a quantia máxima permitida de {valor} coins."
+
+
+#=======[ Backup Das Mensagens ]========#
+#NO_PERMISSION: "&cVocê não possúi permissão para isso."
+#EXPIRE_NOTFOUND: "&cNão havia itens expirados para serem coletados."
+#EXPIRE_COLLECT: "&aSeus itens expirados foram coletados com sucesso!"
+#INVENTORY_FULL: "&cVocê não possúi espaço suficiente no inventário para isso."
+#PLAYER_NULL: "&cO jogador '{player}' não foi encontrado em nosso banco de dados."
+#NUMBER_NULL: "&cValor incorreto, por favor insira um valor de 0 a {valor_max}"
+#ITEM_NULL: "&cSegure um item e digite o comando '/mercado vender [preço]'."
+#ITEM_NOTFOUND: "&cEsse item foi adquirido por outro jogador, abra o mercado novamente para vê-lo atualizado."
+#ITEM_NOCOMP: "&cEste item não é compatível com nenhuma categoria do mercado."
+#ITEM_NOCOMP2: "&cA categoria deste item não aceita a venda de vários itens por vez."
+#SELL_ERROR: "&cOcorreu um erro ao tentar vender este item no mercado."
+#MAX_ITENS: "&cVocê atingiu a quantidade máxima de itens a venda ou aguardando coleta para seu grupo."
+#SELL_SUCESS: "&aItem colocado a venda por {valor} coins"
+#SELL_SUCESS_PESSOAL: "&aItem colocado a venda no mercado pessoal de {player} por {valor} coins"
+#SELL_ERRO_PESSOAL: "&cVocê não pode vender um item no seu próprio mercado pessoal."
+#CONFIRM_NO: "&cOperação cancelada com sucesso."
+#BUY_SUCESS: "&aItem comprado com sucesso por {valor} coins"
+#SELL_BUY_TARGET: "&aVocê vendeu um item para o jogador {player}. A quantia de {valor} coins foi adicionado a sua conta."
+#COLLECT_SUCESS: "&aItem coletado com sucesso."
+#NO_MONEY: "&cVocê não possui money suficiente para adquirir esse item."
+#ITEM_REMOVE_SUCESS: "&aItem removido do mercado com sucesso."
+#ITEM_REMOVE_TARGET: "&cSeu item foi removido do mercado por violar as regras."
+#BAN_MESSAGE: "&cVocê está temporariamente banido do mercado por não usa-lo corretamente."
+#BAN_SUCCESS: "&aVocê baniu o jogador {player} do mercado."
+#BAN_ERRO_ISBAN: "&cEste jogador já está temporariamente banido do mercado."
+#BAN_ERRO_NUMBER: "&cValor do tempo incorreto."
+#UNBAN_SUCESS: "&aVocê desbaniu o jogador {player} do mercado."
+#PRICE_MAX: "&cVocê ultrapassou a quantia máxima permitida de {valor} coins."
+#=======[ Backup Das Mensagens ]========#
+
+
