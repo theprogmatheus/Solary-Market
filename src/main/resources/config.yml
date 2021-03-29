@@ -1,0 +1,196 @@
+##########################[ Solary-Market ]#########################
+##                                                                ##
+##                   Encontrou algum bug? Reporte!                ##
+##                                                                ##
+##                  Email: editionsenpai@gmail.com                ##
+##                     Discord: Sr_Edition#4765                   ##
+##                                                                ##
+####################################################################
+
+
+#/------------------------------------------------------------------/
+#     Autor: ${project.author}
+#     Versão: ${project.version}
+#/------------------------------------------------------------------/
+
+
+
+#Configuração do banco de dados
+
+mysql:
+  #coloque em true para usar o MySQL, caso esteja desativado será usado SQLite em um cache "database.db"
+  enable: false
+  #coloque o endereço do seu banco de dados ex: "localhost".
+  #se seu MySQL estiver rodando em uma porta diferente, especifique a porta. ex: "localhost:2789"
+  hostname: "localhost"
+  #coloque o nome do seu banco de dados ex: "minecraft"
+  database: "minecraft"
+  #coloque o nome de usuário do seu banco de dados ex: "root"
+  username: "root"
+  #coloque a senha do seu usuário do seu banco de dados ex: "pass123"
+  password: "pass123"
+  #coloque o nome da tabela que vai ser usada pelo plugin
+  table: "solarymarket"
+  
+  
+#Configurações gerais do mercado
+
+#coloque aqui o nome do mundo principal do seu servidor
+world: "world"
+
+#coloque aqui se você quer que a contagem de itens apareça na quantidade de itens
+contagem: true
+
+#confiuraçao da mensagem que vai aparecer para todos os jogadores online ao colocar um item a venda (precisa da permissão 'solarymarket.broadcast')
+broadcast:
+  enable: true
+  valor: 1000000
+  delay: 1800
+
+
+#coloque aqui o valor máximo dos itens que serão vendidos no mercado
+preco_max: 100000000
+
+#coloque aqui as configurações do menu
+menu:
+  #coloque aqui a quantidade de linhas que terá no menu do mercado
+  rows: 4
+  
+  #coloque aqui o slot que vai ficar o icone do mercado pessoal
+  pessoalslot: 28
+  
+  #coloque aqui o slot que vai ficar o icone de coletar itens expirados
+  expiradoslot: 36
+
+#coloque aqui o tempo em que o item ficará disponível no mercado (em segundos) ex: (43200 segundos = 12 horas)
+tempo: 43200
+
+#coloque aqui oo limites de itens que podem ser vendidos por vez no mercado
+limites:
+
+  #coloque aqui o limite padrão para qualquer jogador
+  default: 1
+  
+  #coloque aqui limites exclusivos por permissões, ex: "solarymarket.limite.vip1" = 2
+  #você pode adicionar quantos quiser.
+  permissions:
+    vip1: 2
+    vip2: 4
+    vip3: 6
+  
+  
+#crie aqui todas as categorias do mercado
+categorias:
+  
+  #crie um id para categoria, isso ajuda no acesso rápido a tal ex: (/mercado ver armas)
+  combate:
+    #crie o nome da categoria
+    name: "&aCombate"
+    #coloque aqui o slot em que a categoria vai ficar
+    slot: 12
+    #crie o icone da categoria
+    icone: "276 1 glow:true unbreaking:1"
+    #coloque aqui a opção do jogador poder vender items em massa
+    sellall: false
+    #coloque aqui os ids dos itens que devem ser aceitos nessa categoria
+    itens: "268, 272, 267, 283, 276, 361, 279"
+    #coloque aqui os nomes de itens banidos dessa categoria
+    filternames: "espada, enxada, fulano"
+    #coloque aqui os lores de itens banidos dessa categoria
+    filterlores: "mcmmo, loreofensiva, blabla"
+    #coloque aqui os encantamentos de itens banidos dessa categoria
+    filterenchants: "sharpness, fortune, unbreaking"
+    #coloque aqui a descriçao da categoria (opcional)
+    description: "&7Machados, espadas e arcos"
+    
+    
+  armaduras:
+    name: "&aArmaduras"
+    slot: 13
+    icone: "311 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317"
+    filterlores: "mcmmo"   
+    
+  ferramentas:
+    name: "&aFerramentas"
+    slot: 14
+    icone: "278 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "270, 271, 269, 290, 257, 258, 256, 292, 285, 286, 284, 294, 278, 277, 273"
+    filterlores: "mcmmo"
+    
+  livros:
+    name: "&aLivros"
+    slot: 15
+    icone: "403 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "403"
+    filterlores: "mcmmo"
+    
+  alquimia:
+    name: "&aAlquimia"
+    slot: 16
+    icone: "379 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "373, 384, 322"
+    filterlores: "mcmmo"
+    description: "&7Poções, frascos de xp e maçãs douradas"
+    
+  minerios:
+    name: "&aMinérios"
+    slot: 21
+    icone: "133 1 glow:true unbreaking:1"
+    sellall: true
+    itens: "265, 266, 388, 264"
+    filterlores: "mcmmo"
+    
+  esponjas:
+    name: "&aEsponjas"
+    slot: 22
+    icone: "19 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "19"
+    filterlores: "mcmmo"
+    
+  geradores:
+    name: "&aGeradores"
+    slot: 24
+    icone: "52 1 glow:true unbreaking:1"
+    sellall: false
+    itens: "52"
+    filterlores: "mcmmo"            
+    
+  cabecas:
+    name: "&aCabeças"
+    slot: 25
+    icone: "397:3 1 glow:true unbreaking:1 skull:Sr_Edition"
+    sellall: true
+    itens: "397:3"
+    filterlores: "mcmmo"
+    
+    
+
+
+
+
+#Permissões:
+#
+###################[Comandos]#######################
+#
+#/mercado ajuda - solarymarket.command.ajuda
+#/mercado ver - solarymarket.command.ver
+#/mercado vender - solarymarket.command.vender
+#/mercado coletar - solarymarket.command.coletar
+#/mercado pessoal - solarymarket.command.pessoal
+#/mercado punir - solarymarket.command.punir
+#/mercado despunir - solarymarket.command.despunir
+#/mercado reload - solarymarket.command.reload
+#
+####################[Funções]#######################
+#
+#Para remover um item do mercado - solarymarket.admin
+#Broadcast ao colocar o item a venda - solarymarket.broadcast
+#Limites de itens personalizados - solarymarket.limite.<name>
+#
+####################[Funções]#######################

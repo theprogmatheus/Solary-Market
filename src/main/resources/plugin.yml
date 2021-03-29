@@ -1,0 +1,11 @@
+name: "${project.name}"
+main: "${project.mainClass}"
+version: "${project.version}"
+description: "${project.description}"
+author: "${project.author}"
+depend: ["Vault"]
+commands:
+  mercado:
+    description: "Para ver todos os comandos do plugin"
+    aliases: [market, ah]
+    
