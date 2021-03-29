@@ -1,5 +1,7 @@
 package com.redeskyller.bukkit.solarymarket.commands;
 
+import static com.redeskyller.bukkit.solarymarket.SolaryMarket.database;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdAjuda;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdColetar;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdDespunir;
@@ -17,7 +19,6 @@ import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdPunir;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdReload;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdVender;
 import com.redeskyller.bukkit.solarymarket.commands.subcommands.SubCmdVer;
-import com.redeskyller.bukkit.solarymarket.database.Database;
 import com.redeskyller.bukkit.solarymarket.util.StringUtils;
 
 public class SolaryCommand implements CommandExecutor {
@@ -40,24 +41,21 @@ public class SolaryCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		try {
-			Database database = SolaryMarket.database;
-			String table = SolaryMarket.table.concat("_punicoes");
+			String table = SolaryMarket.tableName.concat("_punicoes");
 			boolean banned = false;
 			String staff = "";
 			String motivo = "";
 			long tempo = 0L;
 
-			database.open();
-			ResultSet result = database.query("select * from " + table + " where player='" + sender.getName() + "';");
+			ResultSet result = database.query("SELECT * FROM " + table + " WHERE player='" + sender.getName() + "';");
 			if (result.next()) {
 				staff = result.getString("staff");
 				motivo = result.getString("motivo");
 				tempo = result.getLong("tempo");
 				banned = System.currentTimeMillis() < tempo;
 				if (!banned)
-					database.execute("delete from " + table + " where player='" + sender.getName() + "';");
+					database.execute("DELETE FROM " + table + " WHERE player='" + sender.getName() + "';");
 			}
-			database.close();
 
 			if (banned) {
 				sender.sendMessage("");

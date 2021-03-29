@@ -1,155 +1,57 @@
 package com.redeskyller.bukkit.solarymarket.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class MySQL implements Database {
-	private String hostname;
-	private String database;
-	private String password;
-	private String username;
-	private int port;
-	private Connection connection;
-	private Statement statement;
+public class MySQL extends Database {
 
-	public MySQL(Plugin plugin)
+	private final JavaPlugin plugin;
+
+	public MySQL(final JavaPlugin plugin)
 	{
-	}
-
-	@Override
-	public boolean open()
-	{
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-
-			this.connection = DriverManager.getConnection("jdbc:mysql://" + this.hostname + "/" + this.database,
-					this.username, this.password);
-			this.statement = this.connection.createStatement();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
-		return connection();
-	}
-
-	@Override
-	public boolean close()
-	{
-		if (connection())
-			try {
-				this.statement.close();
-				this.connection.close();
-				this.statement = null;
-				this.connection = null;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		return connection();
-	}
-
-	@Override
-	public boolean connection()
-	{
-		return this.connection != null;
-	}
-
-	@Override
-	public ResultSet query(String query)
-	{
-		try {
-			return this.statement.executeQuery(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		this.plugin = plugin;
 	}
 
 	@Override
 	public Connection getConnection()
 	{
+		try {
+			if (!(checkConnection())) {
+
+				this.plugin.getLogger().info("Conexao com MYSQL inexistente, tentando conectar-se...");
+
+				// load mysql.yml file
+				File configFile = new File(this.plugin.getDataFolder(), "config.yml");
+				if (!configFile.exists()) {
+					this.plugin.getDataFolder().mkdirs();
+					this.plugin.saveResource("config.yml", false);
+				}
+
+				YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+				String hostname = config.getString("mysql.hostname");
+				String database = config.getString("mysql.database");
+				String username = config.getString("mysql.username");
+				String password = config.getString("mysql.password");
+
+				String connectionURL = "jdbc:mysql://" + hostname + "/" + database + "?autoReconnect=true&useSSL=false";
+
+				// load driver
+				Class.forName("com.mysql.jdbc.Driver");
+
+				this.connection = DriverManager.getConnection(connectionURL, username, password);
+
+				this.plugin.getLogger().info("Conexao com MYSQL estabelecida com sucesso.");
+			}
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 		return this.connection;
 	}
 
-	@Override
-	public String getHostname()
-	{
-		return this.hostname;
-	}
-
-	@Override
-	public String getDatabase()
-	{
-		return this.database;
-	}
-
-	@Override
-	public String getUsername()
-	{
-		return this.username;
-	}
-
-	@Override
-	public String getPassword()
-	{
-		return this.password;
-	}
-
-	@Override
-	public String getType()
-	{
-		return "MySQL";
-	}
-
-	@Override
-	public int getPort()
-	{
-		return this.port;
-	}
-
-	public void setHostname(String hostname)
-	{
-		this.hostname = hostname;
-	}
-
-	public void setDatabase(String database)
-	{
-		this.database = database;
-	}
-
-	public void setPassword(String password)
-	{
-		this.password = password;
-	}
-
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-
-	public void setPort(int port)
-	{
-		this.port = port;
-	}
-
-	@Override
-	public boolean execute(String string)
-	{
-		try {
-			this.statement.execute(string);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public Statement getStatement()
-	{
-		return this.statement;
-	}
 }

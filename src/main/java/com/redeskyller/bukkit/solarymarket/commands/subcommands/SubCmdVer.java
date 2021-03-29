@@ -3,7 +3,7 @@ package com.redeskyller.bukkit.solarymarket.commands.subcommands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.plugin.objetos.Categoria;
 
 public class SubCmdVer extends com.redeskyller.bukkit.solarymarket.commands.SubCommand {

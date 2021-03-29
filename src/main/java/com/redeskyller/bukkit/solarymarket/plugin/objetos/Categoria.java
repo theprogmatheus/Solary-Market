@@ -1,5 +1,8 @@
 package com.redeskyller.bukkit.solarymarket.plugin.objetos;
 
+import static com.redeskyller.bukkit.solarymarket.SolaryMarket.database;
+import static com.redeskyller.bukkit.solarymarket.SolaryMarket.tableName;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +20,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
-import com.redeskyller.bukkit.solarymarket.database.Database;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.lib.itembuilder.ItemBuilder;
 import com.redeskyller.bukkit.solarymarket.lib.nbt.NBTItem;
 import com.redeskyller.bukkit.solarymarket.lib.nbt.NBTTagCompound;
@@ -55,7 +57,7 @@ public class Categoria implements org.bukkit.event.Listener {
 
 	public void register()
 	{
-		Bukkit.getPluginManager().registerEvents(this, SolaryMarket.instance);
+		Bukkit.getPluginManager().registerEvents(this, SolaryMarket.getInstance());
 	}
 
 	public void unregister()
@@ -66,23 +68,26 @@ public class Categoria implements org.bukkit.event.Listener {
 	public void expirar(String jogador, String uuid, boolean remove)
 	{
 		try {
-			Database database = SolaryMarket.database;
-			String mercado = SolaryMarket.table.concat("_mercado");
-			String expirado = SolaryMarket.table.concat("_expirados");
-			database.open();
-			ResultSet result = database.query("select * from " + mercado + " where uuid='" + uuid + "';");
-			if (result.next()) {
-				String cache = result.getString("cache");
-				String player = result.getString("player");
-				database.execute(
-						"insert into " + expirado + " values ('" + player + "', '" + uuid + "', '" + cache + "');");
-				database.execute("delete from " + mercado.concat(" where uuid='").concat(uuid).concat("';"));
-				Player target = Bukkit.getPlayer(player);
-				if ((remove) && (target != null) && (!target.getName().equalsIgnoreCase(jogador)))
-					target.sendMessage(SolaryMarket.mensagens.get("ITEM_REMOVE_TARGET"));
-			}
 
-			database.close();
+			String mercado = tableName.concat("_mercado");
+			String expirado = tableName.concat("_expirados");
+
+			try (ResultSet resultSet = database.query("SELECT * FROM " + mercado + " WHERE uuid='" + uuid + "';")) {
+				if (resultSet.next()) {
+
+					String cache = resultSet.getString("cache");
+					String player = resultSet.getString("player");
+
+					database.execute(
+							"INSERT INTO " + expirado + " VALUES ('" + player + "', '" + uuid + "', '" + cache + "');");
+
+					database.execute("DELETE FROM " + mercado.concat(" WHERE uuid='").concat(uuid).concat("';"));
+
+					Player target = Bukkit.getPlayer(player);
+					if ((remove) && (target != null) && (!target.getName().equalsIgnoreCase(jogador)))
+						target.sendMessage(SolaryMarket.mensagens.get("ITEM_REMOVE_TARGET"));
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,11 +99,9 @@ public class Categoria implements org.bukkit.event.Listener {
 		invname = invname.length() <= 10 ? invname : invname.substring(0, 10);
 		MapView mapview = new MapView(this.icone.clone(), player, "§0§0§8Mercado - ".concat(invname));
 		try {
-			Database database = SolaryMarket.database;
 
-			database.open();
 			ResultSet result = database
-					.query("select * from " + SolaryMarket.table + "_mercado where categoria='" + getId() + "';");
+					.query("SELECT * FROM " + SolaryMarket.tableName + "_mercado WHERE categoria='" + getId() + "';");
 			while (result.next())
 				try {
 					String dono = result.getString("player");
@@ -123,8 +126,8 @@ public class Categoria implements org.bukkit.event.Listener {
 					e.printStackTrace();
 				}
 			if (getId().startsWith("PESSOAL:")) {
-				ResultSet query = database.query(
-						"select * from " + SolaryMarket.table + "_mercado where player='" + player.getName() + "';");
+				ResultSet query = database.query("SELECT * FROM " + SolaryMarket.tableName + "_mercado WHERE player='"
+						+ player.getName() + "';");
 				while (query.next())
 					try {
 						String categoria = query.getString("categoria");
@@ -152,7 +155,6 @@ public class Categoria implements org.bukkit.event.Listener {
 					}
 			}
 
-			database.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -185,16 +187,17 @@ public class Categoria implements org.bukkit.event.Listener {
 					newlore.add(this.description.replace("&", "§").replace("{player}", player.getName()));
 					newlore.add(" ");
 				}
-				Database db = SolaryMarket.database;
-				String table = SolaryMarket.table.concat("_mercado");
+				String table = tableName.concat("_mercado");
 				int quantidade = 0;
-				db.open();
-				ResultSet result = db.query(
-						"select * from ".concat(table).concat(" where categoria='").concat(this.id).concat("';"));
-				while (result.next())
-					if (System.currentTimeMillis() < result.getLong("tempo"))
-						quantidade++;
-				db.close();
+
+				try (ResultSet resultSet = database.query(
+						"SELECT tempo FROM ".concat(table).concat(" WHERE categoria='").concat(this.id).concat("';"))) {
+					while (resultSet.next())
+						if (System.currentTimeMillis() < resultSet.getLong("tempo"))
+							quantidade++;
+
+				}
+
 				newlore.add("§7Itens a venda: " + quantidade);
 
 				if (meta.getDisplayName() == null)
@@ -211,7 +214,6 @@ public class Categoria implements org.bukkit.event.Listener {
 		return null;
 	}
 
-	@SuppressWarnings({ "deprecation" })
 	public boolean verify(ItemStack item)
 	{
 
@@ -281,22 +283,20 @@ public class Categoria implements org.bukkit.event.Listener {
 					if (mapview != null) {
 						String type = hunterstag.getString("type");
 						if (type.equalsIgnoreCase("produto"))
-							try {
-								Database database = SolaryMarket.database;
-								database.open();
-								ResultSet result = database.query("select * from " + SolaryMarket.table
-										+ "_mercado where uuid='" + hunterstag.getString("uuid") + "';");
-								if (result.next()) {
-									List<ItemStack> itens = Base64.fromBase64(result.getString("cache"));
-									String dono = result.getString("player");
-									double preco = result.getDouble("preco");
+							try (ResultSet resultSet = database.query("SELECT * FROM " + tableName
+									+ "_mercado WHERE uuid='" + hunterstag.getString("uuid") + "';")) {
+
+								if (resultSet.next()) {
+									List<ItemStack> itens = Base64.fromBase64(resultSet.getString("cache"));
+									String dono = resultSet.getString("player");
+									double preco = resultSet.getDouble("preco");
 									if (event.getClick() == org.bukkit.event.inventory.ClickType.RIGHT)
 										vizualizarItens(player, itens, dono, preco,
 												UUID.fromString(hunterstag.getString("uuid")));
 									else if (player.getName().equals(dono)) {
 										if (getEspaco(player.getInventory()) >= itens.size()) {
-											database.execute("delete from " + SolaryMarket.table
-													+ "_mercado where uuid='" + hunterstag.getString("uuid") + "';");
+											database.execute("DELETE FROM " + tableName + "_mercado WHERE uuid='"
+													+ hunterstag.getString("uuid") + "';");
 											for (ItemStack item : itens)
 												player.getInventory().addItem(new ItemStack[] { item });
 											player.sendMessage(SolaryMarket.mensagens.get("COLLECT_SUCESS"));
@@ -319,7 +319,6 @@ public class Categoria implements org.bukkit.event.Listener {
 									player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0F, 1.0F);
 									vizualizar(player);
 								}
-								database.close();
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -423,7 +422,7 @@ public class Categoria implements org.bukkit.event.Listener {
 			lore = meta.getLore();
 		lore.add("");
 		lore.add("§7Vendedor: §a" + prefix + dono);
-		lore.add("§7Preço: §a" + SolaryMarket.numberFormat(valor));
+		lore.add("§7Preço: §a" + SolaryMarket.currencyFormat(valor));
 		meta.setLore(lore);
 		icone.setItemMeta(meta);
 		return icone;
@@ -447,19 +446,19 @@ public class Categoria implements org.bukkit.event.Listener {
 		lore.add("");
 		if (player.getName().equalsIgnoreCase(dono)) {
 			lore.add("§7Vendedor: §a" + prefix + dono);
-			lore.add("§7Preço: §a" + SolaryMarket.numberFormat(valor));
+			lore.add("§7Preço: §a" + SolaryMarket.currencyFormat(valor));
 			lore.add("");
 			lore.add("§aClique aqui para coletar esse item.");
 		} else {
 			double saldo = SolaryMarket.vault.getEconomy().getBalance(player);
 			if (saldo >= valor) {
 				lore.add("§7Vendedor: §a" + prefix + dono);
-				lore.add("§7Preço: §a" + SolaryMarket.numberFormat(valor));
+				lore.add("§7Preço: §a" + SolaryMarket.currencyFormat(valor));
 				lore.add("");
 				lore.add("§aClique aqui para adquirir esse item.");
 			} else {
 				lore.add("§7Vendedor: §c" + prefix + dono);
-				lore.add("§7Preço: §c" + SolaryMarket.numberFormat(valor));
+				lore.add("§7Preço: §c" + SolaryMarket.currencyFormat(valor));
 				lore.add("");
 				lore.add("§cSaldo insuficiente.");
 			}

@@ -3,7 +3,7 @@ package com.redeskyller.bukkit.solarymarket.commands.subcommands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.commands.SubCommand;
 
 public class SubCmdVender extends SubCommand {
@@ -39,7 +39,7 @@ public class SubCmdVender extends SubCommand {
 					} catch (Exception localException1) {
 					}
 
-				if (SolaryMarket.sell(player)) {
+				if (SolaryMarket.canSell(player)) {
 					if (target != null)
 						SolaryMarket.manager.vender(player, target, valor, item, vendertudo);
 					else

@@ -1,71 +1,48 @@
 package com.redeskyller.bukkit.solarymarket.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
-public class Config {
-	private org.bukkit.plugin.Plugin plugin;
-	private String name;
-	private File file;
-	private org.bukkit.configuration.file.YamlConfiguration yaml;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
-	public Config(org.bukkit.plugin.Plugin plugin, String name)
+public class Config extends YamlConfiguration {
+
+	private final JavaPlugin plugin;
+	private final File file;
+
+	public Config(final JavaPlugin plugin, final String configName)
+	{
+		this(plugin, new File(plugin.getDataFolder(), configName));
+	}
+
+	public Config(final JavaPlugin plugin, final File file)
 	{
 		this.plugin = plugin;
-		this.name = name;
-		reload();
+		this.file = file;
 	}
 
-	public void reload()
+	public Config load()
 	{
 		try {
-			if (this.name.contains("/")) {
-				String[] split = this.name.split("/");
-				if (split.length >= 2) {
-					File folder = new File(split[0]);
-					folder.mkdirs();
-					this.file = new File(folder, split[1]);
-				} else {
-					this.name = this.name.replace("/", "");
-					this.file = new File(this.plugin.getDataFolder(), this.name);
-					if (!this.file.exists())
-						this.plugin.saveResource(this.name, false);
-				}
-			} else {
-				this.file = new File(this.plugin.getDataFolder(), this.name);
-				if (!this.file.exists())
-					this.plugin.saveResource(this.name, false);
+
+			if (!this.file.exists()) {
+				this.plugin.getDataFolder().mkdirs();
+				this.plugin.saveResource(this.file.getName(), false);
 			}
-			this.yaml = org.bukkit.configuration.file.YamlConfiguration
-					.loadConfiguration(new java.io.InputStreamReader(new java.io.FileInputStream(this.file), "UTF-8"));
-		} catch (Exception e) {
-			System.out.println(this.file.getPath());
-			e.printStackTrace();
+
+			load(new InputStreamReader(new FileInputStream(this.file), "UTF-8"));
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
+		return this;
 	}
 
-	public void save()
-	{
-		try {
-			if ((this.yaml != null) && (this.file != null))
-				this.yaml.save(this.file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getString(String path)
-	{
-		return this.yaml.getString(path).replace("&", "§");
-	}
-
-	public org.bukkit.plugin.Plugin getPlugin()
+	public JavaPlugin getPlugin()
 	{
 		return this.plugin;
-	}
-
-	public String getName()
-	{
-		return this.name;
 	}
 
 	public File getFile()
@@ -73,8 +50,13 @@ public class Config {
 		return this.file;
 	}
 
-	public org.bukkit.configuration.file.YamlConfiguration getYaml()
+	@Override
+	public String getString(String path)
 	{
-		return this.yaml;
+		String string = super.getString(path);
+		if (string != null)
+			return string.replace("&", "§");
+
+		return string;
 	}
 }

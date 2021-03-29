@@ -12,8 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
-import com.redeskyller.bukkit.solarymarket.database.Database;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.lib.itembuilder.ItemBuilder;
 import com.redeskyller.bukkit.solarymarket.lib.nbt.NBTItem;
 import com.redeskyller.bukkit.solarymarket.lib.nbt.NBTTagCompound;
@@ -172,16 +171,14 @@ public class MapView {
 	public int expiradosSize(Player player)
 	{
 		int size = 0;
-		try {
-			Database database = SolaryMarket.database;
-			database.open();
-			ResultSet result = database.query(
-					"select * from " + SolaryMarket.table + "_expirados where player='" + player.getName() + "';");
-			while (result.next())
-				size++;
-			database.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		try (ResultSet resultSet = SolaryMarket.database.query("SELECT COUNT(1) FROM " + SolaryMarket.tableName
+				+ "_expirados WHERE player='" + player.getName() + "';")) {
+
+			if (resultSet.next())
+				size += +resultSet.getInt(1);
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 		return size;
 	}

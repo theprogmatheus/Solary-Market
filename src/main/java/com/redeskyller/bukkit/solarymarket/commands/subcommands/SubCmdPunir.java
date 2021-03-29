@@ -1,14 +1,15 @@
 package com.redeskyller.bukkit.solarymarket.commands.subcommands;
 
+import static com.redeskyller.bukkit.solarymarket.SolaryMarket.database;
+
 import java.sql.ResultSet;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.commands.SubCommand;
-import com.redeskyller.bukkit.solarymarket.database.Database;
 import com.redeskyller.bukkit.solarymarket.util.StringUtils;
 
 public class SubCmdPunir extends SubCommand {
@@ -23,8 +24,7 @@ public class SubCmdPunir extends SubCommand {
 	{
 		if (args.length >= 4)
 			try {
-				Database database = SolaryMarket.database;
-				String table = SolaryMarket.table.concat("_punicoes");
+				String table = SolaryMarket.tableName.concat("_punicoes");
 
 				Player target = Bukkit.getPlayer(args[1]);
 				if (target == null) {
@@ -48,17 +48,16 @@ public class SubCmdPunir extends SubCommand {
 				if (staff.equalsIgnoreCase("CONSOLE"))
 					staff = "Console";
 
-				database.open();
 				ResultSet result = database
-						.query("select * from " + table + " where player='" + target.getName() + "';");
+						.query("SELECT * FROM " + table + " WHERE player='" + target.getName() + "';");
 				if (result.next()) {
 					String result_staff = result.getString("staff");
 					long result_tempo = result.getLong("tempo");
 					String result_motivo = result.getString("motivo");
 
 					if (System.currentTimeMillis() >= result_tempo) {
-						database.execute("update " + table + " set tempo='" + (System.currentTimeMillis() + tempo)
-								+ "' where player='" + target.getName() + "';");
+						database.execute("UPDATE " + table + " SET tempo='" + (System.currentTimeMillis() + tempo)
+								+ "' WHERE player='" + target.getName() + "';");
 
 						sender.sendMessage("");
 						sender.sendMessage(
@@ -87,7 +86,7 @@ public class SubCmdPunir extends SubCommand {
 						sender.sendMessage("");
 					}
 				} else {
-					database.execute("insert into " + table + " values ('" + target.getName() + "', '" + staff + "', '"
+					database.execute("INSERT INTO " + table + " VALUES ('" + target.getName() + "', '" + staff + "', '"
 							+ (System.currentTimeMillis() + tempo) + "', '" + motivo + "');");
 					sender.sendMessage("");
 					sender.sendMessage(SolaryMarket.mensagens.get("BAN_SUCCESS").replace("{player}", target.getName()));
@@ -106,7 +105,6 @@ public class SubCmdPunir extends SubCommand {
 					}
 				}
 
-				database.close();
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}

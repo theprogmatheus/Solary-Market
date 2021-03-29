@@ -5,13 +5,13 @@
 	<groupId>com.redeskyller.bukkit</groupId>
 	<artifactId>Solary-Market</artifactId>
 	<version>1.1.2</version>
-	<name>Skyller-Market</name>
+	<name>${artifactId}</name>
 	<description>Um plugin de mercado para servidor spigot 1.8</description>
 
 	<properties>
 		<jdkVersion>1.8</jdkVersion>
 		<bukkitVersion>1.8.8-R0.1-SNAPSHOT</bukkitVersion>
-		<project.mainClass>com.redeskyller.bukkit.solarymarket.Main</project.mainClass>
+		<project.mainClass>com.redeskyller.bukkit.solarymarket.SolaryMarket</project.mainClass>
 		<project.author>Sr_Edition</project.author>
 	</properties>
 

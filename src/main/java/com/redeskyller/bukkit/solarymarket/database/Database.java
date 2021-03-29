@@ -1,33 +1,118 @@
 package com.redeskyller.bukkit.solarymarket.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public abstract interface Database {
-	public abstract boolean open();
+import com.redeskyller.bukkit.solarymarket.util.CallBack;
 
-	public abstract boolean close();
+public abstract class Database {
 
-	public abstract boolean connection();
+	private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-	public abstract ResultSet query(String paramString);
-
-	public abstract boolean execute(String paramString);
+	protected Connection connection;
 
 	public abstract Connection getConnection();
 
-	public abstract Statement getStatement();
+	public boolean checkConnection()
+	{
+		return checkConnection(false);
+	}
 
-	public abstract String getHostname();
+	public boolean checkConnection(boolean showException)
+	{
+		try (ResultSet resultSet = this.connection.prepareStatement("SELECT 1").executeQuery()) {
+			return (resultSet != null);
+		} catch (Exception exception) {
+			if (showException)
+				exception.printStackTrace();
+			return false;
+		}
+	}
 
-	public abstract String getDatabase();
+	public void endConnection()
+	{
+		try {
+			if (checkConnection())
+				this.connection.close();
 
-	public abstract String getUsername();
+			this.connection = null;
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
 
-	public abstract String getPassword();
+	public void executeAsync(String sql, CallBack<Boolean> callBack)
+	{
 
-	public abstract String getType();
+		executorService.submit(() -> {
 
-	public abstract int getPort();
+			try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+
+				boolean result = preparedStatement.execute();
+
+				if (callBack != null)
+					callBack.call(result);
+
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+
+		});
+
+	}
+
+	public void executeAsync(String sql)
+	{
+		executeAsync(sql, null);
+	}
+
+	public void queryAsync(String sql, CallBack<ResultSet> callBack)
+	{
+		executorService.submit(() -> {
+
+			try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				if (callBack != null)
+					callBack.call(resultSet);
+
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+
+		});
+	}
+
+	public void queryAsync(String sql)
+	{
+		queryAsync(sql, null);
+	}
+
+	public boolean execute(String sql)
+	{
+		boolean result = false;
+		try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+
+			result = preparedStatement.execute();
+
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return result;
+	}
+
+	public ResultSet query(String sql)
+	{
+		try {
+			return getConnection().prepareStatement(sql).executeQuery();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return null;
+	}
+
 }

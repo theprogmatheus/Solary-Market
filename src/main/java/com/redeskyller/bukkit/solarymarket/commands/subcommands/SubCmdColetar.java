@@ -17,7 +17,7 @@ public class SubCmdColetar extends SubCommand {
 	{
 		if ((sender instanceof Player)) {
 			Player player = (Player) sender;
-			com.redeskyller.bukkit.solarymarket.app.SolaryMarket.manager.expirados(player);
+			com.redeskyller.bukkit.solarymarket.SolaryMarket.manager.expirados(player);
 		} else
 			sender.sendMessage("§cEste recurso esta disponivel somente para jogadores em jogo.");
 	}

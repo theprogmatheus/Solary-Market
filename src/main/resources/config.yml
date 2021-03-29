@@ -85,17 +85,17 @@ categorias:
   #crie um id para categoria, isso ajuda no acesso rápido a tal ex: (/mercado ver armas)
   combate:
     #crie o nome da categoria
-    name: "&aCombate"
+    name: "&4Combate"
     #coloque aqui o slot em que a categoria vai ficar
     slot: 12
     #crie o icone da categoria
-    icone: "276 1 glow:true unbreaking:1"
+    icone: "276 1 glow:true flag:HIDE_ENCHANTS flag:HIDE_ATTRIBUTES"
     #coloque aqui a opção do jogador poder vender items em massa
     sellall: false
     #coloque aqui os ids dos itens que devem ser aceitos nessa categoria
     itens: "268, 272, 267, 283, 276, 361, 279"
     #coloque aqui os nomes de itens banidos dessa categoria
-    filternames: "espada, enxada, fulano"
+    filternames: "enxada, fulano"
     #coloque aqui os lores de itens banidos dessa categoria
     filterlores: "mcmmo, loreofensiva, blabla"
     #coloque aqui os encantamentos de itens banidos dessa categoria
@@ -105,71 +105,72 @@ categorias:
     
     
   armaduras:
-    name: "&aArmaduras"
+    name: "&3Armaduras"
     slot: 13
-    icone: "311 1 glow:true unbreaking:1"
+    icone: "311 1 glow:true glow:true"
     sellall: false
     itens: "298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317"
-    filterlores: "mcmmo"   
+    filterlores: "mcmmo"
     
   ferramentas:
     name: "&aFerramentas"
     slot: 14
-    icone: "278 1 glow:true unbreaking:1"
+    icone: "278 1 glow:true flag:HIDE_ENCHANTS flag:HIDE_ATTRIBUTES"
     sellall: false
     itens: "270, 271, 269, 290, 257, 258, 256, 292, 285, 286, 284, 294, 278, 277, 273"
     filterlores: "mcmmo"
+    description: "&7Ferramentas em geral, exceto machados."
     
   livros:
-    name: "&aLivros"
+    name: "&5Livros"
     slot: 15
-    icone: "403 1 glow:true unbreaking:1"
+    icone: "403 1 glow:true"
     sellall: false
     itens: "403"
     filterlores: "mcmmo"
     
   alquimia:
-    name: "&aAlquimia"
+    name: "&cAlquimia"
     slot: 16
-    icone: "379 1 glow:true unbreaking:1"
+    icone: "379 1 glow:true"
     sellall: false
-    itens: "373, 384, 322"
+    itens: "373, 322"
     filterlores: "mcmmo"
-    description: "&7Poções, frascos de xp e maçãs douradas"
+    description: "&7Poções e maçãs douradas"
     
   minerios:
-    name: "&aMinérios"
+    name: "&6Minérios"
     slot: 21
-    icone: "133 1 glow:true unbreaking:1"
+    icone: "264 1 glow:true unbreaking:1 flag:HIDE_ENCHANTS"
     sellall: true
-    itens: "265, 266, 388, 264"
+    itens: "265, 266, 388, 264, 42, 41, 133, 157"
     filterlores: "mcmmo"
     
-  esponjas:
-    name: "&aEsponjas"
+  especiais:
+    name: "&bEspeciais"
     slot: 22
-    icone: "19 1 glow:true unbreaking:1"
+    icone: "138 1 glow:true unbreaking:1 flag:HIDE_ENCHANTS"
     sellall: false
-    itens: "19"
+    itens: "154, 138, 384, 47, 145, 116"
     filterlores: "mcmmo"
+    description: "&7Beacons, mesas de encantamento, frascos de xp, etc..."
     
-  geradores:
-    name: "&aGeradores"
+  spawners:
+    name: "&aSpawners"
     slot: 24
-    icone: "52 1 glow:true unbreaking:1"
+    icone: "52 1 glow:true unbreaking:1 flag:HIDE_ENCHANTS"
     sellall: false
     itens: "52"
     filterlores: "mcmmo"            
     
   cabecas:
-    name: "&aCabeças"
+    name: "&eCabeças"
     slot: 25
-    icone: "397:3 1 glow:true unbreaking:1 skull:Sr_Edition"
+    icone: "397:3 1 glow:true skull:Sr_Edition"
     sellall: true
     itens: "397:3"
     filterlores: "mcmmo"
-    
-    
+    description: "&7Cabeça de mobs ou jogadores."
 
 
 

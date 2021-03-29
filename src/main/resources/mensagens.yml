@@ -16,7 +16,7 @@
 
 #Configuração das mensagens do plugin
 
-#OBS EU ERREI OS "SUCESS" NA VERDADE ERA PARA SER "SUCCESS", MAS DEU PREGUIÇA DE CORRIGIR ENTAO VAI FICAR ASSIM MESMO! kkkkk
+#OBS EU ERREI OS "SUCESS", NA VERDADE ERA PARA SER "SUCCESS", MAS DEU PREGUIÇA DE CORRIGIR ENTAO VAI FICAR ASSIM MESMO! kkkkk
 
 NO_PERMISSION: "&cVocê não possúi permissão para isso."
 EXPIRE_NOTFOUND: "&cNão havia itens expirados para serem coletados."

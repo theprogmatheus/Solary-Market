@@ -2,7 +2,7 @@ package com.redeskyller.bukkit.solarymarket.commands.subcommands;
 
 import org.bukkit.command.CommandSender;
 
-import com.redeskyller.bukkit.solarymarket.app.SolaryMarket;
+import com.redeskyller.bukkit.solarymarket.SolaryMarket;
 import com.redeskyller.bukkit.solarymarket.commands.SubCommand;
 
 public class SubCmdReload extends SubCommand {
@@ -14,9 +14,9 @@ public class SubCmdReload extends SubCommand {
 	@Override
 	public void execute(CommandSender sender, String[] args)
 	{
-		SolaryMarket.config.reload();
+		SolaryMarket.config.load();
+		SolaryMarket.mensagens.load();
 		SolaryMarket.manager.loadCategorias();
-		SolaryMarket.mensagens.reload();
 		sender.sendMessage("§aCategorias e mensagens recarregadas com sucesso.");
 	}
 }
